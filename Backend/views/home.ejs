@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url('https://deih43ym53wif.cloudfront.net/terraced-rice-fields-sapa-vietnam-shutterstock_541224970_2b5ca32c41.jpeg');
+            background-size: cover;
+        }
+
+        .home-content {
+            text-align: center;
+            border: 2px solid #000000;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .login-link, .register-link {
+            color: #1500ff;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out; 
+        }
+
+        .login-link:hover {
+            color: #7c0061;
+            text-decoration: underline;
+        }
+
+        .register-link:hover {
+            color: #7c0061;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-content">
+        <h1>Welcome to the Task Manager</h1>
+        <p>Have an account, <a href="/login" class="login-link">login here</a>!</p>
+        <p>Do not have an account, <a href="/users/register" class="register-link">sign up here</a>!</p>
+
+    </div>
+</body>
+</html>

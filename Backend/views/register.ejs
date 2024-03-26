@@ -1,0 +1,101 @@
+<!-- views/register.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register - Task Manager</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: url('https://deih43ym53wif.cloudfront.net/terraced-rice-fields-sapa-vietnam-shutterstock_541224970_2b5ca32c41.jpeg');
+            background-size: cover;
+        }
+
+        .signup-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #1500ff;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            color: #000; /* Màu chữ là đen */
+            text-decoration: none;
+        }
+
+        .login-link a {
+            color: #1500ff; /* Màu chữ khi hover là màu xanh */
+            text-decoration: underline;
+            transition: color 0.3s ease-in-out; 
+        }
+
+        .login-link a:hover {
+            color: #7c0061; /* Màu chữ khi hover là màu đỏ đậm */
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-box">
+        <h2>Sign Up</h2>
+        <form action="/users/register" method="post">
+            <div class="input-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="input-group">
+                <label for="phonenumber">Phone Number:</label>
+                <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter your phone number" required>
+            </div>
+            <button type="submit">Sign up</button>
+        </form>
+        <div class="login-link">
+            <p>Already have an account, <a href="/login" class="login-link">login here</a>!</p>
+        </div>
+    </div>
+</body>
+</html>
