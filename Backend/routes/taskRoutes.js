@@ -1,57 +1,55 @@
 const express = require('express');
-
 const router = express.Router();
 const auth = require('../middlewares/auth');
-const Task = require('../models/Taskt');
+const Task = require('../models/Taskt'); 
 
-router.get('/test',auth, (req, res) => {
+// Test endpoint
+router.get('/test', auth, (req, res) => {
     res.json({
         message: 'Task routes are working!',
         user: req.user
     });
 });
 
-//create a task
-//create a task
-router.post('/add', async (req, res) => {
-    try {
-        console.log(req.body.taskDescription);
-        if (!req.body.taskDescription) {
-            console.log('Description is required.');
-            return res.status(400).json({ error: "Description is required." });
-        }
-
-        const task = new Task({
-            description: req.body.taskDescription,
-            completed: req.body.completed,
-            owner: req.body.owner,
-        });
-
-        const newTask = await task.save();
-        console.log('Task created successfully:', newTask);
-
-        // res.status(201).json({ task: newTask, message: "Task Created Successfully" });
-        const tasks = await Task.find({});
-        res.json({ tasks: tasks});
-    } catch (err) {
-        console.error('Error creating task:', err);
-        res.status(400).send({ error: err });
-    }
+// Add a new task
+router.post('/add', auth, async (req, res) => {
+    // ... Code for adding a new task
 });
 
+// View all tasks with pagination and optional search
 router.get('/viewall', async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search;
+    const skip = (page - 1) * limit;
+
+    let matchQuery = {};
+    if (search) {
+        matchQuery.description = { $regex: search, $options: 'i' }; 
+    }
+
     try {
-        console.log("Loading");
-        const tasks = await Task.find({});
-        console.log('task does not exist', tasks);
-        res.json(tasks);
+        const tasks = await Task.find(matchQuery)
+            .sort({ _id: 1 })
+            .skip(skip)
+            .limit(limit);
+        
+        const totalCount = await Task.countDocuments(matchQuery);
+        const totalPages = Math.ceil(totalCount / limit);
+
+        res.json({
+            tasks,
+            pageInfo: {
+                currentPage: page,
+                totalPages,
+                totalCount,
+                limit
+            }
+        });
     } catch (error) {
-        console.error('Error fetching tasks:', error);
-        res.status(500).send({ error: 'Error fetching tasks' });
+        res.status(500).send({ error: error.message });
     }
 });
-
-
 
 // get user tasks
 router.get('/', auth, async (req, res) => {

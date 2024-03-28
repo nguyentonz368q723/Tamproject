@@ -105,17 +105,9 @@ h1 {
 <body>
     <div class="container">
         <h1>Welcome to the Dashboard</h1>
-        <a href="/tasks/viewall">View My Tasks</a>
+        <a href="/tasks/viewall">View All Tasks</a>
         <div id="tasks">
-            <% if (tasks && tasks.length > 0) { %>
-                <ul>
-                    <% tasks.forEach(function(task) { %>
-                        <li><%= task.description %> <button class="deleteTaskBtn" data-task-id="<%= task._id %>">Delete</button></li>
-                    <% }); %>
-                </ul>
-            <% } else { %>
-                <p>No tasks found. Add a new task.</p>
-            <% } %>
+           
             <form id="taskForm">
                 <input type="text" id="taskDescription" placeholder="Task Description" required>
                 <button type="submit" id="addTaskBtn">Add Task</button>
@@ -125,56 +117,22 @@ h1 {
             <button onclick="location.href='/logout'">Sign Out</button>
         </div>
     </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script>
+    <script>
         $(document).ready(function() {
-            // Tải và cập nhật danh sách công việc khi trang web được tải
-            $.ajax({
-                url: '/tasks',
-                method: 'GET',
-                success: function(data) {
-                    // Hiển thị danh sách công việc
-                    data.tasks.forEach(function(task) {
-                        $('#tasks ul').append('<li>' + task.description + ' <button class="deleteTaskBtn" data-task-id="' + task._id + '">Xóa</button></li>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-
-            // Xử lý sự kiện gửi form
+            
             $('#taskForm').submit(function(event) {
-                event.preventDefault(); // Ngăn chặn hành vi mặc định của form
-
+                event.preventDefault(); 
                 var description = $('#taskDescription').val();
                 $.ajax({
-                    url: 'tasks/add',
+                    url: '/tasks/add',
                     method: 'POST',
-                    data: { taskDescription: description },
+                    contentType: 'application/json',
+                    data: JSON.stringify({ taskDescription: description }),
                     success: function(data) {
-                        // Cập nhật danh sách task sau khi thêm mới
-                        $('#tasks ul').append('<li>' + data.task.description + ' <button class="deleteTaskBtn" data-task-id="' + data.task._id + '">Delete</button></li>');
-                        $('#taskDescription').val('');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-
-            // Gửi yêu cầu xóa task khi người dùng nhấn nút "Delete"
-            $(document).on('click', '.deleteTaskBtn', function() {
-                var taskId = $(this).data('task-id');
-                $.ajax({
-                    url: '/tasks/' + taskId,
-                    method: 'DELETE',
-                    success: function(data) {
-                        // Cập nhật danh sách task sau khi xóa
-                        $('#tasks ul').empty();
-                        data.tasks.forEach(function(task) {
-                            $('#tasks ul').append('<li>' + task.description + ' <button class="deleteTaskBtn" data-task-id="' + task._id + '">Delete</button></li>');
-                        });
+                      
+                        window.location.href = '/tasks/viewall';
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
@@ -182,6 +140,6 @@ h1 {
                 });
             });
         });
-    </script> -->
+    </script>
 </body>
 </html>

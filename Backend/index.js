@@ -14,11 +14,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
-    secret: 'your_secret_key', // Thay 'your_secret_key' bằng một giá trị bí mật thực tế
+    secret: 'your_secret_key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: !true } // Đặt 'secure: true' nếu bạn đang sử dụng HTTPS
-  }));
+    cookie: { secure: false }
+}));
 app.use('/users', userRoutes);
 app.use('/tasks', taskRoutes);
 app.set('view engine', 'ejs');
@@ -29,11 +29,9 @@ app.get('/', (req, res) => {
 });
 app.get('/login', (req, res) => {
     res.render('login');
-    // res.redirect('login');
 });
 app.get('/users/register', (req, res) => {
     res.render('register');
-    // res.redirect('register');
 });
 function isAuthenticated(req, res, next) {
     if (!req.session.user) {
@@ -44,8 +42,6 @@ function isAuthenticated(req, res, next) {
 app.get('/dashboard', isAuthenticated, (req, res) => {
     res.render('dashboard', { user: req.session.user, tasks: [] });
 });
-
-app.use('/tasks', taskRoutes);
 
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
@@ -58,14 +54,12 @@ app.get('/logout', (req, res) => {
 app.use((req, res, next) => {
     res.header('Cache-Control', 'no-store');
     next();
-  });
-  
+});
 
-// Middleware đơn giản để log lỗi
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
-  });
+});
   
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
