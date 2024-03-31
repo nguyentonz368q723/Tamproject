@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
             phonenumber
         });
         await user.save();
-        res.status(201).send({ message: "User registered successfully." });
+        res.status(201).send({ message: "User registered successfully.", user });
     } catch (err) {
         res.status(500).send({ error: "An error occurred, please try again." });
     }
@@ -30,22 +30,27 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const { name, password } = req.body; 
-        const user = await User.findOne({ name }); 
-        console.log('User found:', user);
-        if (!user) {
-            return res.status(401).send({ error: 'Login failed, check authentication credentials' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        console.log('Password match:', isMatch);
-        if (!isMatch) {
-            return res.status(401).send({ error: 'Login failed, check authentication credentials' });
-        }
-    } catch (err) {
-        res.status(500).send({ error: 'Internal Server Error' });
+     console.log("User: " , req.body);
+     const { name, password } = req.body;
+     const user = await User.findOne({ name });
+ 
+     if(!user){
+         throw new Error('Unable to login, invalid credentials');
+     }
+ 
+     const isMatch = await bcrypt.compare(password, user.password);
+ 
+     if(!isMatch){
+         throw new Error('Unable to login, invalid credentials');
+     }
+     req.session.user = user; 
+     res.redirect('/dashboard');
     }
-});
+     catch (err) {
+         console.error(err);
+         res.status(400).send({ error: err.message });
+     }
+  });
 
 
 module.exports = router;
