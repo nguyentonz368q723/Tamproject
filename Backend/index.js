@@ -27,21 +27,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.get('/', (req, res) => {
     res.render('home');
 });
-app.get('/login', (req, res) => {
-    res.render('login');
-});
-app.get('/users/register', (req, res) => {
-    res.render('register');
-});
-function isAuthenticated(req, res, next) {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    next();
-}
-app.get('/dashboard', isAuthenticated, (req, res) => {
-    res.render('dashboard', { user: req.session.user, tasks: [] });
-});
+// app.get('/login', (req, res) => {
+//     res.render('login');
+// });
+// app.get('/users/register', (req, res) => {
+//     res.render('register');
+// });
+// function isAuthenticated(req, res, next) {
+//     if (!req.session.user) {
+//         return res.redirect('/login');
+//     }
+//     next();
+// }
+// app.get('/dashboard', isAuthenticated, (req, res) => {
+//     res.render('dashboard', { user: req.session.user, tasks: [] });
+// });
 
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
