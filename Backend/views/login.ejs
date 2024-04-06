@@ -101,25 +101,27 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#loginForm').submit(function(event) {
-                event.preventDefault(); 
-                $.ajax({
-                    url: '/users/login',
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function(data) {
-                        // Redirect to dashboard upon successful login
-                        window.location.href = data.redirectUrl;
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        // Handle login error (e.g., display error message)
-                        alert("Login failed. Please try again.");
-                    }
-                });
-            });
+    $(document).ready(function() {
+        $('#loginForm').submit(function(event) {
+        event.preventDefault(); 
+        $.ajax({
+            url: '/users/login',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(data) {
+                // Redirect to dashboard upon successful login
+                var redirectUrl = data.redirectUrl;
+                window.location.href = redirectUrl;
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Handle login error (e.g., display error message)
+                alert("Login failed. Please try again.");
+            }
         });
+    });
+});
+
     </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const { response } = require('express');
 const jwt = require('jsonwebtoken');
 exports.register = async (req, res) => {
     try {
@@ -39,8 +40,9 @@ exports.login = async (req, res) => {
       }
 
       const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1y' });
-
+      // console.log("Anh Ton Cao Toc");
       res.status(200).json({ user, token, redirectUrl: '/dashboard' });
+      // console.log("Anh Ton cao Toc");
   } catch (error) {
       console.error('Login error:', error);
       res.status(500).json({ message: "Internal server error" });
