@@ -139,18 +139,5 @@ router.delete('/:id', auth , async (req,res)=>{
     }
 })
 
-// router.get('/view-tasks', async (req, res) => {
-//     try {
-//         console.log("New Task");
-//         const tasks = await Task.find({});
-//         console.log('task does not exist', tasks);
-//         // res.render('tasks', { tasks });
-//         res.json(tasks);
-        
-//     } catch (error) {
-//         console.error('Error fetching tasks:', error);
-//         res.status(500).send({ error: 'Error fetching tasks' });
-//     }
-// });
 
 module.exports = router;

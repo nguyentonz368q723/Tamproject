@@ -63,12 +63,12 @@
 
         .register-link {
             margin-top: 15px;
-            color: #000; /* Màu chữ là đen */
+            color: #000; 
             text-decoration: none;
         }
 
         .register-link a {
-            color: #1500ff; /* Màu chữ khi hover là màu xanh */
+            color: #1500ff; 
             text-decoration: underline;
             transition: color 0.3s ease-in-out; 
         }
@@ -82,7 +82,7 @@
     <div class="login-container">
         <div class="login-box">
             <h2>Login</h2>
-            <form action="/users/login" method="post">
+            <form id="loginForm" action="/users/login" method="post">
                 <div class="input-group">
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" placeholder="Enter your name" required>
@@ -98,5 +98,28 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#loginForm').submit(function(event) {
+                event.preventDefault(); 
+                $.ajax({
+                    url: '/users/login',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        // Redirect to dashboard upon successful login
+                        window.location.href = data.redirectUrl;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        // Handle login error (e.g., display error message)
+                        alert("Login failed. Please try again.");
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -24,43 +24,57 @@ app.use('/tasks', taskRoutes);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Render home page
 app.get('/', (req, res) => {
     res.render('home');
 });
-// app.get('/login', (req, res) => {
-//     res.render('login');
-// });
-// app.get('/users/register', (req, res) => {
-//     res.render('register');
-// });
-// function isAuthenticated(req, res, next) {
-//     if (!req.session.user) {
-//         return res.redirect('/login');
-//     }
-//     next();
-// }
-// app.get('/dashboard', isAuthenticated, (req, res) => {
-//     res.render('dashboard', { user: req.session.user, tasks: [] });
-// });
 
+// Render login page
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+// Render register page
+app.get('/users/register', (req, res) => {
+    res.render('register');
+});
+
+// Middleware to check if user is authenticated
+function isAuthenticated(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+}
+
+// Render dashboard page if user is authenticated
+app.get('/dashboard', isAuthenticated, (req, res) => {
+    res.render('dashboard', { user: req.session.user, tasks: [] });
+});
+
+// Handle user logout
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
-        if(err) {
+        if (err) {
             return console.log(err);
         }
         res.redirect('/login');
     });
 });
+
+// Set Cache-Control header to 'no-store' for all responses
 app.use((req, res, next) => {
     res.header('Cache-Control', 'no-store');
     next();
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
 });
   
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });

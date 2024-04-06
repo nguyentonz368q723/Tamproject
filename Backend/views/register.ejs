@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>register - Task Manager</title>
+    <title>Register - Task Manager</title>
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
@@ -21,20 +21,20 @@
         .signup-box {
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 270px; 
             text-align: center;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .input-group label {
             width: 100%;
             text-align: left;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             display: block;
             font-weight: bold;
         }
@@ -56,25 +56,25 @@
 
         .login-link {
             margin-top: 15px;
-            color: #000; /* Màu chữ là đen */
+            color: #000; 
             text-decoration: none;
         }
 
         .login-link a {
-            color: #1500ff; /* Màu chữ khi hover là màu xanh */
+            color: #1500ff; 
             text-decoration: underline;
             transition: color 0.3s ease-in-out; 
         }
 
         .login-link a:hover {
-            color: #7c0061; /* Màu chữ khi hover là màu đỏ đậm */
+            color: #7c0061; 
         }
     </style>
 </head>
 <body>
     <div class="signup-box">
         <h2>Sign Up</h2>
-        <form action="/users/register" method="post">
+        <form id="registerForm">
             <div class="input-group">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" placeholder="Enter your name" required>
@@ -88,14 +88,57 @@
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
             </div>
             <div class="input-group">
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+            </div>
+            <div class="input-group">
                 <label for="phonenumber">Phone Number:</label>
                 <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter your phone number" required>
             </div>
             <button type="submit">Sign up</button>
         </form>
         <div class="login-link">
-            <p>Already have an account, <a href="/login" class="login-link">login here</a>!</p>
+            <p>Already have an account? <a href="/login" class="login-link">Login here</a>!</p>
         </div>
     </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phonenumber = document.getElementById('phonenumber').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            try {
+                const response = await fetch('/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password, phonenumber })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Registration successful! Redirecting to login page.');
+                    window.location.href = '/login';
+                } else {
+                    alert(data.message || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Error during registration:', error);
+                alert('Registration failed. Please try again.');
+            }
+        });
+    </script>
 </body>
 </html>
