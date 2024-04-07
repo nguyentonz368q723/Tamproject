@@ -140,6 +140,29 @@ h1 {
                 });
             });
         });
+
+//         $(document).ready(function() {
+//   $('#taskForm').submit(function(event) {
+//     event.preventDefault(); 
+//     var description = $('#taskDescription').val();
+//     $.ajax({
+//       url: '/tasks/add',
+//       method: 'POST',
+//       contentType: 'application/json',
+//       headers: {
+//         'Authorization': 'Bearer ' + localStorage.getItem('token') // Lấy token từ localStorage
+//       },
+//       data: JSON.stringify({ taskDescription: description }),
+//       success: function(data) {
+//         window.location.href = '/tasks/viewall';
+//       },
+//       error: function(xhr, status, error) {
+//         console.error(error);
+//       }
+//     });
+//   });
+// });
+
     </script>
 </body>
 </html>
