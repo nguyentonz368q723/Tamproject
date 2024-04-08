@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
     const user = new User({ name, email, password: hashedPassword, phonenumber });
 
     await user.save();
-    res.status(201).json({ user });
+    res.status(201).json({ name: user.name, password: user.hashedPassword, email: user.email, phonenumber: user.phonenumber });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -29,22 +29,31 @@ exports.login = async (req, res) => {
   const { name, password } = req.body;
 
   try {
-    const user = await User.findOne({ name });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+      const user = await User.findOne({ name });
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ message: "Invalid credentials" });
+      }
 
-    const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1y' });
+      const token = jwt.sign({ userId: user._id }, 'your_secret_key', { expiresIn: '1y' });
+      res.status(200).json({ 
+        name: user.name, 
+        token, 
+        password, 
+        email: user.email, 
+        phonenumber: user.phonenumber,
+        redirectUrl: './dashboard'
+      });
+      // console.log("Success");
+      res.render('../views/dashboard.ejs');
 
-    res.status(200).json({ user, token, redirectUrl: '/dashboard' });
 
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: "Internal server error" });
+      console.error('Login error:', error);
+      res.status(500).json({ message: "Internal server error" });
   }
 };

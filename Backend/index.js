@@ -39,17 +39,32 @@ app.get('/users/register', (req, res) => {
     res.render('register');
 });
 
+
 // Middleware to check if user is authenticated
 function isAuthenticated(req, res, next) {
-    if (!req.session.user) {
+    if (req.session.user) {
+        return res.redirect('/dashboard');
+    } else {
         return res.redirect('/login');
     }
-    next();
 }
 
+
 // Render dashboard page if user is authenticated
-app.get('/dashboard', isAuthenticated, (req, res) => {
-    res.render('dashboard', { user: req.session.user, tasks: [] });
+app.get('/dashboard', isAuthenticated, async (req, res) => {
+    try {
+        // Assuming you have a Task model defined and can fetch tasks from MongoDB
+        const Task = require('./models/Task');
+
+        // Fetch tasks from database
+        const tasks = await Task.find({ userId: req.session.user._id }).exec();
+
+        // Render dashboard view with user and tasks data
+        res.render('dashboard', { user: req.session.user, tasks });
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 // Handle user logout

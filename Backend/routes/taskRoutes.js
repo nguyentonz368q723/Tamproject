@@ -13,8 +13,26 @@ router.get('/test', auth, (req, res) => {
 
 // Add a new task
 router.post('/add', auth, async (req, res) => {
-    // ... Code for adding a new task
+    try {
+        const { taskDescription } = req.body;
+     
+        if (!taskDescription) {
+            return res.status(400).json({ error: "Description is required." });
+        }
+        const task = new Task({
+            description: taskDescription,
+            owner: req.user._id 
+        });
+
+        const newTask = await task.save();
+
+        res.status(201).json({ task: newTask, message: "Task Created Successfully" });
+    } catch (error) {
+        console.error('Error creating task:', error);
+        res.status(500).json({ error: "Failed to create task." });
+    }
 });
+
 
 // View all tasks with pagination and optional search
 router.get('/viewall', async (req, res) => {
