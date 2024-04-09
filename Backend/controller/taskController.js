@@ -4,7 +4,7 @@ const auth = require('../middlewares/auth');
 const { response } = require('express');
 
 // taskController.js
-const Task = require('../models/Task')
+const Task = require('../models/Taskt')
 
 // Add a new task
 exports.addTask = async (req, res) => {

@@ -4,13 +4,18 @@ const auth = require('../middlewares/auth');
 const taskController = require('../controller/taskController'); 
 
 // Test endpoint
-router.get('/test', auth, taskController.test);
+router.get('/test', auth, (req, res) => {
+    res.json({
+        message: 'Task routes are working!',
+        user: req.user
+    });
+});
 
 // Add a new task
-router.post('/add', auth, taskController.addTask);
+router.post('/add', taskController.addTask);
 
 // View all tasks with pagination and optional search
-router.get('/viewall', auth, taskController.viewAllTasks);
+router.get('/viewall', taskController.viewAllTasks);
 
 // Get user tasks
 router.get('/', auth, taskController.getUserTasks);
