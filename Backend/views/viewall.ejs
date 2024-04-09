@@ -4,143 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View All Tasks</title>
-<style>
+    <style>
         body {
-     font-family: 'Times New Roman', Times, serif;
-     background-image: url('https://deih43ym53wif.cloudfront.net/terraced-rice-fields-sapa-vietnam-shutterstock_541224970_2b5ca32c41.jpeg');
-     background-size: cover;
-     background-repeat: no-repeat;
-     margin: 0;
-     padding: 0;
- }
- 
- .container {
-     max-width: 800px;
-     margin: 0 auto;
-     padding: 20px;
-     display: flex;
-     flex-direction: column;
-     align-items: center; 
- }
- 
- h1 {
-     text-align: center;
-     margin-bottom: 20px;
-     color: white; 
- }
- 
- #tasks {
-     background-color: rgba(255, 255, 255, 0.8);
-     padding: 20px;
-     border-radius: 5px;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-     margin-bottom: 20px;
-     width: 100%; 
-     max-width: 600px; 
- }
- 
- #tasks ul {
-     list-style-type: none;
-     padding: 0;
- }
- 
- #tasks li {
-     margin-bottom: 10px;
-     padding: 10px;
-     background-color: #f0f0f0;
-     border-radius: 5px;
- }
- 
- #tasks form {
-     margin-top: 20px;
-     display: flex;
-     justify-content: center; 
- }
- 
- #tasks form input[type="text"] {
-     flex: 1;
-     padding: 10px;
-     margin-right: 10px;
-     border-radius: 5px;
-     border: 1px solid #ccc;
-     font-size: 16px;
- }
- 
- #tasks form button {
-     padding: 10px 20px;
-     background-color: #007bff;
-     color: white;
-     border: none;
-     border-radius: 5px;
-     cursor: pointer;
-     font-size: 16px;
- }
- 
- #tasks form button:hover {
-     background-color: #0056b3; 
- }
- 
- .sign-out {
-     position: fixed;
-     top: 20px;
-     right: 20px;
- }
- 
- .sign-out button {
-     padding: 10px 20px;
-     background-color: #dc3545;
-     color: white;
-     border: none;
-     border-radius: 5px;
-     cursor: pointer;
-     font-size: 16px;
- }
- 
- .sign-out button:hover {
-     background-color: #c82333; 
- }
- 
- </style>
+            font-family: 'Times New Roman', Times, serif;
+            background-image: url('https://deih43ym53wif.cloudfront.net/terraced-rice-fields-sapa-vietnam-shutterstock_541224970_2b5ca32c41.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #tasks {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        #tasks ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #tasks li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        #searchForm {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #searchForm input[type="text"] {
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        #searchForm button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #paging {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #paging a {
+            margin: 0 5px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        #paging a:hover {
+            text-decoration: underline;
+        }
+
+        .sign-out {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .sign-out button {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .sign-out button:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>All Tasks</h1>
-       
-        <form id="searchForm" action="/tasks/viewall" method="GET">
-            <input type="text" name="search" placeholder="Search tasks...">
-            <button type="submit">Search</button>
-        </form>
+<div class="container">
+    <h1>All Tasks</h1>
 
-        <!-- Task list -->
-        <div id="tasks">
-            <% if (tasks && tasks.length > 0) { %>
-                <ul>
-                    <% tasks.forEach(function(task) { %>
-                        <li><%= task.description %></li>
-                    <% }); %>
-                </ul>
-            <% } else { %>
-                <p>No tasks found. Add a new task.</p>
-            <% } %>
-        </div>
+    <!-- Task search -->
+    <form id="searchForm" action="/tasks/viewall" method="GET">
+        <input type="text" name="search" placeholder="Search tasks...">
+        <button type="submit">Search</button>
+    </form>
 
-        <!-- PAGING -->
-        <div>
-            <% for(let i = 1; i <= totalPages; i++) { %>
-                <a href="/tasks/viewall?page=<%= i %>&search=<%= searchQuery %>"><%= i %></a>
-            <% } %>
-        </div>
-        
-        <!-- Go back to Dashboard -->
-        <a href="/dashboard">Back to Dashboard</a>
-        
-        <div class="sign-out">
-            <button onclick="location.href='/logout'">Sign Out</button>
-        </div>
+    <!-- Task list -->
+    <div id="tasks">
+        <% if (tasks && tasks.length > 0) { %>
+            <ul>
+                <% tasks.forEach(function(task) { %>
+                    <li><%= task.description %></li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No tasks found. Add a new task.</p>
+        <% } %>
     </div>
-    <script>
-     
-    </script>
+
+    <!-- Paging -->
+    <div id="paging">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="/tasks/viewall?page=<%= i %>&search=<%= searchQuery %>"><%= i %></a>
+        <% } %>
+    </div>
+
+    <!-- Go back to dashboard -->
+    <a href="/dashboard" style="color: white;">Back to Dashboard</a>
+
+    <!-- Log out -->
+    <div class="sign-out">
+        <button onclick="location.href='/logout'">Sign Out</button>
+    </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+        const searchForm = document.getElementById('searchForm');
+        
+        searchForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(searchForm);
+            const searchQuery = formData.get('search');
+            
+
+            window.location.href = `/tasks/viewall?search=${searchQuery}`;
+        });
+
+        const pagingLinks = document.querySelectorAll('#paging a');
+        pagingLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                
+                const page = link.textContent;
+                const searchQuery = new URLSearchParams(window.location.search).get('search');
+
+                window.location.href = `/tasks/viewall?page=${page}&search=${searchQuery}`;
+            });
+        });
+    });
+</script>
 </body>
 </html>
