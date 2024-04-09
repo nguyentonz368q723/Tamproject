@@ -43,12 +43,13 @@ exports.login = async (req, res) => {
       res.status(200).json({ 
         name: user.name, 
         token, 
-        password, 
+        password: user.hashedPassword, 
         email: user.email, 
+        id: user.id,
         phonenumber: user.phonenumber,
         redirectUrl: './dashboard'
       });
-      // console.log("Success");
+
       res.render('../views/dashboard.ejs');
 
 
