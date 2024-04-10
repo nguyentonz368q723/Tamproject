@@ -100,34 +100,36 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          var loginForm = document.getElementById('loginForm');
-      
-          loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-      
-            var formData = new FormData(loginForm);
-      
-            fetch('/users/login', {
-              method: 'POST',
-              body: formData
-            })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              // Sau khi đăng nhập thành công, chuyển hướng đến trang dashboard
-              window.location.href = '/dashboard';
-            })
-            .catch(error => {
-              console.error('Fetch Error:', error);
-              alert("Login failed. Please try again.");
-            });
-          });
+<script>
+$(document).ready(function() {
+    $('#loginForm').submit(function(event) {
+        event.preventDefault(); 
+        $.ajax({
+            url: '/users/login',
+            method: 'POST',
+            data: $(this).serialize(),
+            success: function(data) {
+                // Lấy URL chuyển hướng từ phản hồi
+                var redirectUrl = data.redirectUrl;
+                if (redirectUrl) {
+                    // Chuyển hướng người dùng đến trang dashboard
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error('Redirect URL not provided');
+                    alert("Login failed. Please try again.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                // Xử lý lỗi đăng nhập (ví dụ: hiển thị thông báo lỗi)
+                alert("Login failed. Please try again.");
+            }
         });
-      </script> -->
-    <script>
+    });
+});
+
+      </script> 
+    <!-- <script>
         $(document).ready(function() {
             $('#loginForm').submit(function(event) {
                 event.preventDefault(); 
@@ -154,7 +156,7 @@
                 });
             });
         });
-        </script> 
+        </script>  -->
         
         <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
